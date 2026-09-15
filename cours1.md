@@ -104,7 +104,7 @@ noté `::` pour définir les différentes méthodes.
   ```
 
 - En C++, pas de type de retour pour ces fonctions, et un nom identique à
-  la classe avec un `~` préfix pour le destructeur.
+  la classe avec un `~` préfixe pour le destructeur.
 
   ```c++
   matrix::matrix(int width, int height, int value) :
@@ -384,7 +384,7 @@ Contrôle d'accès
   ```
 
 - Dans cet exemple, cela permet de garantir qu'aucun code extérieur à la
-  classe ne peut modifier les proprétés `width`, `height` ou `cells`. Non
+  classe ne peut modifier les propriétés `width`, `height` ou `cells`. Non
   seulement, cela permet de s'assurer que `cells` pointe toujours sur
   un tableau bien initialisé mais aussi que sa taille reste `width * height`.
 
@@ -392,3 +392,114 @@ Contrôle d'accès
   de code source sur lequel il est nécessaire d'être vigilants. A l'inverse,
   si un bug se produit à l'usage de cette classe, il ne sera nécessaire de
   lire que les méthodes de cette classe.
+
+
+Exemple de constructeurs implicites
+-----------------------------------
+
+Le fichier [duration.cpp](exemples/duration.cpp) montre un exemple de
+constructeurs possibles pour une classe qui servirait à stocker une heure
+au format secondes / minutes / heure (`h:mm:ss`). La classe définit trois
+propriétés :
+
+```c++
+class Duration {
+  int seconds;
+  int minutes;
+  int hours;
+
+  ...
+};
+```
+
+### Constructeur par défaut
+
+Le constructeur par défaut est un constructeur qui ne prend aucun argument.
+Dans notre cas, il initialisera les champs à zéro.
+
+```c++
+  Duration() :
+      seconds(0),
+      minutes(0),
+      hours(0)
+  {
+    // Rien d'autre à initialiser
+  }
+```
+
+Il est appelé *implicitement* en déclarant une variable de type `Duration` sans
+utiliser des parenthèses.
+
+```c++
+Duration d0; // Appel du constructeur par défaut
+```
+
+Remarque : ajouter des parenthèse induirait le compilateur en erreur, puisqu'il
+ne comprendrait pas le code suivant comme on pourrait s'y attendre.
+
+```c++
+Duration d0(); // Déclaration d'une fonction d0 retournant une Duration
+```
+
+Il l’interpréterait comme une déclaration d'une fonction qui ne prend aucun paramètre et qui
+retourne une instance de `Duration`.
+
+Un constructeur par défaut est automatiquement généré par le compilateur quand
+il n'y a aucun constructeur déclaré, comme le montre l'exemple
+[default.cpp](exemples/default.cpp). Ce constructeur généré appellera les
+constructeurs par défaut des propriétés si elles en ont ; dans le cas
+contraire, le compilateur refusera le programme.
+
+
+### Constructeur de conversion
+
+Le constructeur de conversion permet de convertir implicitement d'un type
+quelconque vers une instance de la classe. Par exemple, ici, on peut convertir
+un nombre entier représentant un nombre de secondes en une instance de
+`Duration`.
+
+```c++
+  // Constructeur de conversion
+  Duration(int n) :
+      seconds(n % 60),
+      minutes(n / 60 % 60),
+      hours(n / 60 / 60)
+  {
+    // Rien d'autre à initialiser
+  }
+```
+
+L'entier `n` est converti en construisant une `Duration` dont les champs
+sont initialisés aux restes successifs des divisions par 60.
+
+Il est ensuite possible de convertir *implicitement* un entier en `Duration` :
+
+```c++
+Duration d = 60 + 59; // Appel du constructeur de conversion
+```
+
+
+### Constructeur de copie
+
+Comme son nom l'indique, le constructeur de copie sert à copier une instance
+d'une classe vers une nouvelle instance. Ils prennent en paramètre une
+*référence* sur l'objet à copier. Dans l'exemple, on copie chaque champ
+individuellement.
+
+```c++
+  // Constructeur de copie
+  Duration(Duration& other) :
+      seconds(other.seconds),
+      minutes(other.seconds),
+      hours(other.seconds)
+  {
+    // Rien d'autre à initialiser
+  }
+```
+
+Le constructeur de copie est appelé implicitement chaque fois qu'une instance
+de la classe est initialisée à partir d'une autre :
+
+```c++
+  Duration d1 = d0; // Appel du constructeur par recopie
+```
