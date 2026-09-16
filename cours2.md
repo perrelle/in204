@@ -206,7 +206,7 @@ public:
 };
 ```
 
-### Terminologie
+### Terminologie
 
 - `Shape` est la *classe de base* ou *classe mère*
 - `Circle` et `Square` sont des *classes dérivées* ou *classe enfant*.
