@@ -6,10 +6,10 @@ TESTS := $(addsuffix .test,$(SOURCES))
 all: $(TESTS)
 
 %.c.exe: %.c
-	gcc -o $@ $<
+	gcc -g -o $@ $<
 
 %.cpp.exe: %.cpp
-	g++ -o $@ $<
+	g++ -g -o $@ $<
 
 $(TESTS):%.test: %.exe
 	@echo "$*"
