@@ -17,17 +17,17 @@ public:
 };
 
 matrix::matrix(int width, int height, int value) :
-    cells(new int[width * height * sizeof(int)]),
     width(width),
-    height(height)
+    height(height),
+    cells(new int[width * height * sizeof(int)])
 {
   init(value);
 }
 
 matrix::matrix(int size) :
-    cells(new int[size * size * sizeof(int)]),
     width(size),
-    height(size)
+    height(size),
+    cells(new int[size * size * sizeof(int)])
 {
   init(0);
 }

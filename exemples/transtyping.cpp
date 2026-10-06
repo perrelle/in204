@@ -17,6 +17,6 @@ void call_f(A* a) {
 int main() {
     A a;
     B b;
-    call_f(dynamic_cast<C*>(&b));
+    call_f(static_cast<C*>(&b));
     return 0;
 }

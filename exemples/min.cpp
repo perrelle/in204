@@ -93,7 +93,7 @@ public:
     allocated_size(other.allocated_size),
     contents(new T[other.allocated_size])
   {
-    for (int i = 0; i < allocated_size; i++) {
+    for (size_t i = 0; i < allocated_size; i++) {
       contents[i] = other.contents[i];
     }
   }

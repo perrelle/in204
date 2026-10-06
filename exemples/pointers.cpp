@@ -1,5 +1,5 @@
-void f() {
-    int x;
+int main() {
+    int x = 42;
     int *p = &x; // Basic pointer initialization
     int *q;      // Uninitialized pointers are valid
     int y = *p;  // Read the pointed memory
@@ -7,8 +7,8 @@ void f() {
     p = &y;      // Pointers can be updated
 }
 
-void g() {
-    int t[10];
+void f() {
+    int t[10] = { 0 };
     int *p;
     // Two distinct syntaxes, same result
     p = &t[0];
@@ -23,8 +23,8 @@ struct s {
     int field;
 };
 
-void h() {
-    s x;
+void g() {
+    s x = { 42 };
     s *p = &x;
     int y;
     // Two distinct syntaxes, same result
